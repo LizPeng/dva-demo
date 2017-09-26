@@ -32,13 +32,39 @@ function Users({ list: dataSource, total, page: current }) {
       render: (text, { id }) => (
         <span className={styles.operation}>
           <a href="">Edit</a>
-          <Popconfirm title="Confirm to delete?" onConfirm={deleteHandler.bind(null, id)}></Popconfirm>
+          <Popconfirm title="Confirm to delete?" onConfirm={deleteHandler.bind(null, id)}>
+            <a href="">Delete</a>
+          </Popconfirm>
         </span>
       ),
     },
   ];
-  
-  return ();
+  return (
+    <div className={styles.normal}>
+      <div>
+        <Table
+          columns={columns}
+          dataSource={dataSource}
+          rowKey={record => record.id}
+          pagination={false}
+        />
+        <Pagination
+          className="antd-table-pagination"
+          total={total}
+          current={current}
+          pageSize={PAGE_SIZE}
+        />
+      </div>
+    </div>
+  );
 }
 
-export default Users;
+function mapStateToProps(state) {
+  const { list, total, page } = state.users;
+  return {
+    list,
+    total,
+    page,
+  };
+}
+export default connect(mapStateToProps)(Users);
